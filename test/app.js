@@ -1,3 +1,4 @@
+/* eslint spaced-comment:off */
 'use strict';
 var path = require('path');
 var assert = require('yeoman-assert');
@@ -10,16 +11,22 @@ describe('generator-pug-gulp-sass-bootstrap:app', function () {
       .toPromise();
   });
 
+  it('the generator can be required without throwing', function () {
+    // not testing the actual run of generators yet
+    this.app = require('../generators/app');
+  });
+
   it('creates files', function () {
     assert.file([
       'dummyfile.txt'
     ]);
   });
 
-  it('installs sass-bootstrap', function (done) {
-    this.app.run(function () {
-      assert.equal(this.bowerInstallCalls[0][0], 'bootstrap-sass-official');
-      done();
-    }.bind(this));
+  it('installs pug example file', function (done) {
+    assert.file([
+      'app/pug/index.pug'
+    ]);
+
+    done();
   });
 });
