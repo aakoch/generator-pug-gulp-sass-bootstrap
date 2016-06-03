@@ -15,4 +15,15 @@ describe('generator-pug-gulp-sass-bootstrap:app', function () {
       'dummyfile.txt'
     ]);
   });
+
+  it('installs bootstrap', function (done) {
+    helpers.mockPrompt(this.app, {
+      format: 'css'
+    });
+
+    this.app.run(function () {
+      assert.equal(this.bowerInstallCalls[0][0], 'bootstrap');
+      done();
+    }.bind(this));
+  });
 });
