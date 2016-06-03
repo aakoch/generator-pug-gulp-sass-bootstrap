@@ -16,13 +16,9 @@ describe('generator-pug-gulp-sass-bootstrap:app', function () {
     ]);
   });
 
-  it('installs bootstrap', function (done) {
-    helpers.mockPrompt(this.app, {
-      format: 'css'
-    });
-
+  it('installs sass-bootstrap', function (done) {
     this.app.run(function () {
-      assert.equal(this.bowerInstallCalls[0][0], 'bootstrap');
+      assert.equal(this.bowerInstallCalls[0][0], 'bootstrap-sass-official');
       done();
     }.bind(this));
   });
