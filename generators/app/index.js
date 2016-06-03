@@ -23,14 +23,57 @@ module.exports = yeoman.Base.extend({
     }.bind(this));
   },
 
+  initializing: function () {
+    this.pkg = require('root-require')('package.json');
+  },
+
   writing: function () {
+    
     this.fs.copy(
       this.templatePath('dummyfile.txt'),
       this.destinationPath('dummyfile.txt')
     );
+    
+    this.fs.copy(
+      this.templatePath('app/pug/index.pug'),
+      this.destinationPath('app/pug/index.pug')
+    );
+
+    return {
+      gulpfile: function () {
+        this.fs.copyTpl(
+          this.templatePath('gulpfile.js'),
+          this.destinationPath('gulpfile.js'),
+          {
+            date: (new Date).toISOString().split('T')[0],
+            name: this.pkg.name,
+            version: this.pkg.version,
+            includeSass: this.includeSass,
+            includeBootstrap: this.includeBootstrap,
+            includeBabel: this.options['babel'],
+            testFramework: this.options['test-framework']
+          }
+        );
+      },
+
+      packageJSON: function () {
+        this.fs.copyTpl(
+          this.templatePath('_package.json'),
+          this.destinationPath('package.json'),
+          {
+            includeSass: this.includeSass,
+            includeBabel: this.options['babel']
+          }
+        );
+      }
+    };
   },
 
   install: function () {
     this.installDependencies();
+  },
+
+  bootstrapFiles: function () {
+    this.npmInstall(['pug'], {save: true});
   }
 });
